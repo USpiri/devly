@@ -1,0 +1,95 @@
+[[CommitType]]
+name = "Feat"
+emoji = "✨"
+description = "New feature or functionality added to the code"
+release = true
+
+[[CommitType]]
+name = "Fix"
+emoji = "🐛"
+description = "Bug fix"
+release = true
+
+[[CommitType]]
+name = "Perf"
+emoji = "⚡️"
+description = "Code performance improvements"
+release = true
+
+[[CommitType]]
+name = "Docs"
+emoji = "📚"
+description = "Changes to the documentation"
+release = false
+
+[[CommitType]]
+name = "Style"
+emoji = "🎨"
+description = "Code style changes"
+release = false
+
+[[CommitType]]
+name = "Refactor"
+emoji = "🌿"
+description = "Changes without adding features, just quality of the code"
+release = false
+
+[[CommitType]]
+name = "Remove"
+emoji = "🛑"
+description = "Remove code or files"
+release = false
+
+[[CommitType]]
+name = "Config"
+emoji = "🔧"
+description = "Changes in project configuration"
+release = false
+
+[[CommitType]]
+name = "Test"
+emoji = "🧪"
+description = "Adding or modifying tests"
+release = false
+
+[[CommitType]]
+name = "Chore"
+emoji = "🟢"
+description = "Updating maintenance tasks, dependency updates, etc."
+release = false
+
+[[CommitType]]
+name = "CI"
+emoji = "👷"
+description = "Changes to the continuous integration configuration"
+release = false
+
+[[CommitType]]
+name = "Build"
+emoji = "📦"
+description = "Changes that affect the build system"
+release = false
+
+[[CommitType]]
+name = "Initial Commit"
+emoji = "🎉"
+description = "First commit"
+release = true
+
+[[CommitType]]
+name = "Release"
+emoji = "🔖"
+description = "Release a new version of the code"
+release = true
+
+[[CommitType]]
+name = "Merge"
+emoji = "🔀"
+description = "Merge branches or pull requests"
+release = false
+
+[[CommitType]]
+name = "Revert"
+emoji = "⏪"
+description = "Revert to a previous commit"
+release = false
