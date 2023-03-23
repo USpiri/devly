@@ -1,9 +1,12 @@
 mod args;
+mod commit;
+mod git;
+mod utils;
 mod commit_types;
 
 use args::Commands;
 use clap::Parser;
-use commit_types::load_commit_types;
+use commit::commit;
 
 use crate::args::Cli;
 
@@ -11,13 +14,7 @@ fn main() {
     let cli:Cli = Cli::parse();
     match &cli.command {
         Some(Commands::Commit {}) => {
-            let commit_types = load_commit_types();
-            match commit_types {
-                Ok(commit_types) => for commit_type in commit_types {
-                    println!("{commit_type}");
-                },
-                Err(e) =>  println!("ERROR: {}", e),
-            }
+            commit();
         },
         None => ()
     }
