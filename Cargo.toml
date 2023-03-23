@@ -3,9 +3,9 @@ name = "devly"
 version = "0.1.0"
 edition = "2021"
 authors = ["USpiri <urielspiridione135@gmail.com>"]
-description = "DevTool cli for developers"
+description = "Devly - A simple CLI to help you in the development process writen in rust"
 license = "GPL-3.0"
-homepage = "https://github.com/USpiri"
+homepage = "https://github.com/USpiri/devly"
 build = "build.rs"
 
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
