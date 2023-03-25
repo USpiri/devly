@@ -105,8 +105,8 @@
                     </Component>
                     
                     <Directory Id='Bin' Name='bin'>
-                        <Component Id="devly_commits.toml" Guid="b7db2c00-ed37-486a-afe5-487776f64603">
-                            <File Id="devly_commits.toml" Name="devly_commits.toml" Source="devly_commits.toml" KeyPath="yes" Vital="yes" />
+                        <Component Id="devly.toml" Guid="b7db2c00-ed37-486a-afe5-487776f64603">
+                            <File Id="devly.toml" Name="devly.toml" Source="devly.toml" KeyPath="yes" Vital="yes" />
                         </Component>
                         <Component Id='Path' Guid='25F0ECBC-DF83-498A-A934-079AC1A15F44' KeyPath='yes'>
                             <Environment
@@ -148,7 +148,7 @@
             
             <ComponentRef Id='binary0'/>
 
-            <ComponentRef Id="devly_commits.toml"/>
+            <ComponentRef Id="devly.toml"/>
 
             <Feature
                 Id='Environment'

@@ -20,9 +20,9 @@ pub fn load_commit_types() -> Result<Vec<CommitType>, Box<dyn std::error::Error>
     // Instalation path
     let mut current_exe = env::current_exe().expect("No se puede obtener la ruta actual");
     current_exe.pop();
-    current_exe.push("devly_commits.toml");
+    current_exe.push("devly.toml");
 
-    // Reading devly_commits.toml file
+    // Reading devly.toml file
     let content = fs::read_to_string(current_exe)?;
     let data: toml::Value = content.parse()?;
     let commit_types = data
