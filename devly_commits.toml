@@ -1,5 +1,5 @@
 [Config]
-use_emoji = false
+use_emoji = true
 
 [[CommitType]]
 name = "Feat"
