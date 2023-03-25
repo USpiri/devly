@@ -61,3 +61,13 @@ fn clear_stdout(commands: &str) -> Vec<&str> {
         .filter(|&line| !line.is_empty())
         .collect()
 }
+
+pub fn git_restore(files: &Vec<String>) -> Result<(), std::io::Error>  {
+    let mut command = Command::new("git");
+    command.arg("restore");
+    for file in files {
+        command.arg(file);
+    }
+    command.output().map(|_| ())
+
+}

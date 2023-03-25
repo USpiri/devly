@@ -21,4 +21,21 @@ pub enum Commands {
     Commit {
     },
 
+    /// Provides a set of subcommands to interact with Git repositories,
+    /// including managing branches, merging changes, and restoring files.
+    #[clap(verbatim_doc_comment)]
+    Git(Git),
+
+}
+
+#[derive(Parser)]
+pub struct Git {
+    #[command(subcommand)]
+    pub command: Option<GitSubcommands>,
+}
+
+#[derive(Subcommand)]
+pub enum GitSubcommands {
+    /// Allows you to restore files from a Git repository.
+    Restore{},
 }
