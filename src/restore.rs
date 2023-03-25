@@ -10,10 +10,6 @@ pub fn restore() {
         print_err("Not a git repository");
         std::process::exit(1);
     }
-    restore_files();
-}
-
-fn restore_files() {
     let options = get_changed_files();
     let files_to_restore = MultiSelect::new("Select the files you want to restore", options)
         .prompt()
