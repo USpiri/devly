@@ -1,3 +1,6 @@
+[Config]
+use_emoji = false
+
 [[CommitType]]
 name = "Feat"
 emoji = "✨"

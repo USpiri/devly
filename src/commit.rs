@@ -9,7 +9,7 @@ use crate::{
     utils::{print_err, print_success},
 };
 
-pub fn commit() {
+pub fn commit(use_emoji:bool) {
     if !has_git_repository() {
         print_err("Not a git repository");
         std::process::exit(1);
@@ -37,19 +37,18 @@ pub fn commit() {
         }
     };
 
-    let commit = if commit_type.name == "Initial Commit" {
-        format!("{} {}", commit_type.emoji, commit_type.name)
-    } else if breaking_change {
-        format!(
+    let emoji = if use_emoji { commit_type.emoji } else { "".to_owned() };
+    
+    let message = match (commit_type.name.as_str(), breaking_change) {
+        ("Initial Commit", _) => format!("{} {}", emoji, commit_type.name),
+        (_, true) => format!(
             "{} {}: {} \n\n{}\n",
-            commit_type.emoji, commit_type.name, commit_message, "[BREAKING CHANGE]"
-        )
-    } else {
-        format!(
-            "{} {}: {}",
-            commit_type.emoji, commit_type.name, commit_message
-        )
+            emoji, commit_type.name, commit_message, "[BREAKING CHANGE]"
+        ),
+        _ => format!("{} {}: {}", emoji, commit_type.name, commit_message),
     };
+    let commit = message.trim_start();
+
     ask_to_add_files();
 
     if Confirm::new(&format!("Confirm to commit?\n{commit}\n"))
