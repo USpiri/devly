@@ -124,10 +124,11 @@ fn select_commit_type() -> Result<CommitType, &'static str> {
 }
 
 fn ask_to_add_files() {
+    let mut options:Vec<String> = get_changed_files();
     if !get_staged_files().is_empty() {
         println!("You have some files in stage to be commited...");
         println!("{:?}", get_staged_files());
-        let ans = Confirm::new("Do you want to proceed with staged files (yes) or add new files?")
+        let ans = Confirm::new("Do you want to proceed with staged files (yes) or add new files (no)?")
             .with_default(true)
             .with_help_message(
                 "If you does'n want to add these files, please 'ESC' and type 'git reset <files>'",
@@ -135,27 +136,31 @@ fn ask_to_add_files() {
             .prompt();
         match ans {
             Ok(false) => {
-                let mut options = get_changed_files();
                 let staged = get_staged_files();
                 options.retain(|x| !staged.contains(&x));
-                add_files(options);
-                return;
+                if options.is_empty() {
+                    print_err("No files found to add");
+                    std::process::exit(1);
+                }
             }
-            Ok(_) => (),
+            Ok(true) => return,
             Err(_) => std::process::exit(1),
         }
     }
-    let options = get_changed_files();
-    add_files(options);
+    options.insert(0, String::from("Select all"));
+    add_files(&options);
 }
 
-fn add_files(options: Vec<String>) {
-    let files_vec = MultiSelect::new("Select the files you want to add:", options)
+fn add_files(options: &Vec<String>) {
+    let mut files_vec = MultiSelect::new("Select the files you want to add:", options.to_vec())
         .prompt()
         .unwrap();
     if files_vec.is_empty() && get_staged_files().is_empty() {
         print_err("No files found to add");
         std::process::exit(1);
+    }
+    if files_vec[0] == "Select all" {
+        files_vec = options.to_vec();
     }
     match git_add(&files_vec) {
         Ok(_) => print_success("Added Files"),
