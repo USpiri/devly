@@ -6,55 +6,62 @@ use inquire::{
 use crate::{
     commit_types::{load_commit_types, CommitType},
     git::{get_changed_files, get_staged_files, git_add, git_commit, has_git_repository},
-    utils::{print_err, print_success}
+    utils::{print_err, print_success},
 };
 
 pub fn commit() {
-    if has_git_repository() {
-        let commit_type = match select_commit_type() {
-            Ok(commit) => commit,
-            Err(e) => {
-                print_err(e);
-                std::process::exit(1);
-            }
-        };
-        let mut breaking_change = false;
-        if commit_type.release {
-            breaking_change = ask_for_braking_change();
-        }
-        let commit_message = match ask_for_git_message() {
-            Ok(msg) => msg,
-            Err(e) => {
-                print_err(e);
-                std::process::exit(1);
-            }
-        };
-        
-        let commit = if commit_type.name == "Initial Commit" {
-            format!("{} {}", commit_type.emoji, commit_type.name)
-        } else if breaking_change {
-            format!(
-                "{} {}: {} \n\n{}\n",
-                commit_type.emoji, commit_type.name, commit_message, "[BREAKING CHANGE]"
-            )
-        } else {
-            format!("{} {}: {}", commit_type.emoji, commit_type.name, commit_message)
-        };
-        ask_to_add_files();
-        
-        if Confirm::new(&format!("Confirm to commit?\n{commit}\n"))
-            .with_default(true)
-            .prompt()
-            .unwrap()
-        {
-            match git_commit(&commit) {
-                Ok(_) => print_success(&format!("Commited: {}", commit)),
-                Err(e) => print_err(&e.to_string()),
-            };
-        };
-    } else {
-        print_err("Error: Not a git repository");
+    if !has_git_repository() {
+        print_err("Not a git repository");
+        std::process::exit(1);
     }
+    if get_changed_files().is_empty() {
+        print_err("Not files to commit");
+        std::process::exit(1);
+    }
+    let commit_type = match select_commit_type() {
+        Ok(commit) => commit,
+        Err(e) => {
+            print_err(e);
+            std::process::exit(1);
+        }
+    };
+    let mut breaking_change = false;
+    if commit_type.release {
+        breaking_change = ask_for_braking_change();
+    }
+    let commit_message = match ask_for_git_message() {
+        Ok(msg) => msg,
+        Err(e) => {
+            print_err(e);
+            std::process::exit(1);
+        }
+    };
+
+    let commit = if commit_type.name == "Initial Commit" {
+        format!("{} {}", commit_type.emoji, commit_type.name)
+    } else if breaking_change {
+        format!(
+            "{} {}: {} \n\n{}\n",
+            commit_type.emoji, commit_type.name, commit_message, "[BREAKING CHANGE]"
+        )
+    } else {
+        format!(
+            "{} {}: {}",
+            commit_type.emoji, commit_type.name, commit_message
+        )
+    };
+    ask_to_add_files();
+
+    if Confirm::new(&format!("Confirm to commit?\n{commit}\n"))
+        .with_default(true)
+        .prompt()
+        .unwrap()
+    {
+        match git_commit(&commit) {
+            Ok(_) => print_success(&format!("Commited: {}", commit)),
+            Err(e) => print_err(&e.to_string()),
+        };
+    };
 }
 
 fn ask_for_git_message() -> Result<String, &'static str> {
@@ -143,10 +150,10 @@ fn ask_to_add_files() {
     add_files(options);
 }
 
-fn add_files(options:Vec<String>){
+fn add_files(options: Vec<String>) {
     let files_vec = MultiSelect::new("Select the files you want to add:", options)
-    .prompt()
-    .unwrap();
+        .prompt()
+        .unwrap();
     if files_vec.is_empty() && get_staged_files().is_empty() {
         print_err("No files found to add");
         std::process::exit(1);
